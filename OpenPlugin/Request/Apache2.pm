@@ -1,12 +1,12 @@
 package OpenPlugin::Request::Apache2;
 
-# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.3 2003/08/12 00:51:51 andreychek Exp $
 
 use strict;
 use OpenPlugin::Param();
 use base   qw( OpenPlugin::Param );
 
-$OpenPlugin::Request::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Request::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -51,15 +51,15 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::Request::Apache - Apache driver for the OpenPlugin::Param plugin
+OpenPlugin::Request::Apache2 - Apache2 driver for the OpenPlugin::Param plugin
 
 =head1 PARAMETERS
 
-In order to use the Apache driver, you must pass in an Apache or
+In order to use the Apache2 driver, you must pass in an Apache or
 Apache::Request object when creating a new OpenPlugin object.  For example:
 
  my $r = shift;
- my $OP = OpenPlugin->new( request => { apache => $r } );
+ my $OP = OpenPlugin->new( request => { apache2 => $r } );
 
 After the plugin is initialized, the Apache::Request object is accessible
 to you using:
@@ -72,7 +72,7 @@ to you using:
 
 =item * driver
 
-Apache
+Apache2
 
 =back
 

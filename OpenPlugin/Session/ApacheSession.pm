@@ -1,13 +1,13 @@
 package OpenPlugin::Session::ApacheSession;
 
-# $Id: ApacheSession.pm,v 1.4 2003/04/03 01:51:26 andreychek Exp $
+# $Id: ApacheSession.pm,v 1.5 2003/06/10 00:30:23 andreychek Exp $
 
 use strict;
 use OpenPlugin::Session();
 use base        qw( OpenPlugin::Session );
 use Apache::Session::Flex();
 
-$OpenPlugin::Session::ApacheSession::VERSION = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Session::ApacheSession::VERSION = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
 
 
 sub init {
@@ -20,6 +20,11 @@ sub init {
     if ($params->{Store} eq "File") {
         # Can we write to the session dir, and is it really a directory?
         unless (-w $params->{Directory} and -d $params->{Directory}) {
+
+            # We only do this is it's really a dir, and it's writable
+            $params->{Directory} =~ /^(.*)$/;
+            $params->{Directory} = $1;
+
             unless (mkdir $params->{Directory}, 0760) {
                 $self->OP->exception->throw(
                     "The session dir ($params->{Directory}) is not writable " .
@@ -31,6 +36,11 @@ sub init {
         }
         # Can we write to the lockfile dir, and is it really a directory?
         unless (-w $params->{LockDirectory} and -d $params->{LockDirectory}) {
+
+            # We only do this is it's really a dir, and it's writable
+            $params->{LockDirectory} =~ /^(.*)$/;
+            $params->{LockDirectory} = $1;
+
             unless (mkdir $params->{LockDirectory}, 0760) {
                 $self->OP->exception->throw(
                     "The lock dir ($params->{LockDirectory}) is not writable ".

@@ -27,6 +27,7 @@ OpenPlugin/Datasource/DBI.pm
 OpenPlugin/Datasource/LDAP.pm
 OpenPlugin/Datasource/Template.pm
 OpenPlugin/Exception.pm
+OpenPlugin/Exception/Template.pm
 OpenPlugin/HttpHeader.pm
 OpenPlugin/HttpHeader/Apache.pm
 OpenPlugin/HttpHeader/Apache2.pm

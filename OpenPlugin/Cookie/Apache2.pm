@@ -1,6 +1,6 @@
 package OpenPlugin::Cookie::Apache2;
 
-# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:24 andreychek Exp $
+# $Id: Apache2.pm,v 1.3 2003/05/06 03:33:06 andreychek Exp $
 
 use strict;
 use OpenPlugin::Cookie();
@@ -8,7 +8,7 @@ use base                    qw( OpenPlugin::Cookie );
 use Apache::Cookie();
 use Data::Dumper            qw( Dumper );
 
-$OpenPlugin::Cookie::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Cookie::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 
 sub init {
@@ -70,7 +70,7 @@ __END__
 
 =head1 NAME
 
-OpenInteract::Cookies::Apache - Apache driver for the OpenPlugin::Cookie plugin
+OpenPlugin::Cookies::Apache - Apache driver for the OpenPlugin::Cookie plugin
 
 =head1 PARAMETERS
 

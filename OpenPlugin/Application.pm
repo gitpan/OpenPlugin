@@ -1,10 +1,10 @@
-# $Id: Application.pm,v 1.29 2003/04/28 17:43:47 andreychek Exp $
+# $Id: Application.pm,v 1.30 2003/05/11 01:54:03 andreychek Exp $
 
 package OpenPlugin::Application;
 
 use strict;
 
-$OpenPlugin::Application::VERSION = sprintf("%d.%02d", q$Revision: 1.29 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Application::VERSION = sprintf("%d.%02d", q$Revision: 1.30 $ =~ /(\d+)\.(\d+)/);
 
 use OpenPlugin();
 use CGI::Application 2.6 qw();
@@ -80,7 +80,7 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::Application - A baseclass of CGI::Application, meant to help you
+OpenPlugin::Application - A subclass of CGI::Application, meant to help you
 create reusable web applications.
 
 =head1 SYNOPSIS
@@ -109,8 +109,8 @@ create reusable web applications.
  #!/usr/bin/perl -wT
  use strict;
  my $r = shift;
- my $demo = Demo->new( PARAMS {
-                    config  => { src    => /path/to/OpenPlugin.conf },
+ my $demo = Demo->new( PARAMS => {
+                    config  => { src    => "/path/to/OpenPlugin.conf" },
                     request => { apache => $r },
  });
 
@@ -144,7 +144,7 @@ in this document.
 
 It is not necessary to use OpenPlugin::Application in order to build web
 applications using OpenPlugin.  This plugin is meant to be for your
-convenience -- to help you structure you web applications in a manner which
+convenience -- to help you structure your web applications in a manner which
 makes sense, and is reusable.
 
 =head1 USAGE
@@ -156,8 +156,8 @@ example of one might look like:
  #!/usr/bin/perl -wT
  use MyWebApp();
 
- my $web_app = MyWebApp->new( PARAMS {
-                    config => { src => /path/to/OpenPlugin.conf },
+ my $web_app = MyWebApp->new( PARAMS => {
+                    config => { src => "/path/to/OpenPlugin.conf" },
                   });
  $web_app->run();
 
@@ -175,8 +175,8 @@ might do something like the following:
  use MyWebApp();
 
  my $r = shift;
- my $web_app = MyWebApp->new( PARAMS {
-                            config  => { src    => /path/to/OpenPlugin.conf },
+ my $web_app = MyWebApp->new( PARAMS => {
+                            config  => { src    => "/path/to/OpenPlugin.conf" },
                             request => { apache => $r },
                         });
  $web_app->run();
@@ -206,8 +206,11 @@ work, I highly recommend using OpenPlugin's HttpHeader and Cookie plugins
 instead, these offer far more flexibility and functionality than do the ones
 provided with CGI::Application.
 
-The HttpHeader C<send_outgoing()> method will be called for you, you just need
-to add your headers to the outgoing queue by calling httpheader->set_outgoing.
+When using OpenPlugin, the HttpHeader C<send_outgoing()> method will be called
+for you, you just need to add your headers to the outgoing queue by calling
+$OP->httpheader->set_outgoing({ header_name => header_value }).  Of course,
+this is just the typical Httpheader Plugin usage, see the L<Httpheader
+documentation|OpenPlugin::Httpheader> for more information.
 
 =back
 

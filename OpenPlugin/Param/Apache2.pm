@@ -1,13 +1,13 @@
 package OpenPlugin::Param::Apache2;
 
-# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.3 2003/08/12 00:51:51 andreychek Exp $
 
 use strict;
 use OpenPlugin::Param();
 use base   qw( OpenPlugin::Param );
 
 
-$OpenPlugin::Param::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Param::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -50,7 +50,7 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::Param::Apache - Apache driver for the OpenPlugin::Param plugin
+OpenPlugin::Param::Apache2 - Apache2 driver for the OpenPlugin::Param plugin
 
 =head1 PARAMETERS
 
@@ -65,7 +65,7 @@ plugin.  See the L<Request|OpenPlugin::Request> plugin for more information.
 
 =item * driver
 
-Apache
+Apache2
 
 As this is a child plugin of the Request plugin, the configuration of this
 plugin should be embedded within the configuration for the Request plugin.

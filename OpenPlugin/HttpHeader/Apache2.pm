@@ -1,12 +1,12 @@
 package OpenPlugin::HttpHeader::Apache2;
 
-# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.4 2003/08/12 00:51:51 andreychek Exp $
 
 use strict;
 use OpenPlugin::HttpHeader();
 use base          qw( OpenPlugin::HttpHeader );
 
-$OpenPlugin::HttpHeader::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::HttpHeader::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 # This driver will only work if used under mod_perl
 
@@ -32,8 +32,7 @@ sub init {
 sub send_outgoing {
     my ( $self, $type ) = @_;
 
-    $type ||= "text/html";
-
+    $type ||= 'text/html';
     foreach my $name ( $self->get_outgoing ) {
         $self->OP->request->object->headers_out->{ $name } =
                                                 $self->get_outgoing( $name );
@@ -43,7 +42,14 @@ sub send_outgoing {
     # cookies along with the header
     $self->OP->cookie->bake if grep /^cookie$/, $self->OP->loaded_plugins;
 
-    $self->OP->request->object->send_http_header( $type );
+    $self->OP->request->object->content_type( $type );
+
+    # Something, which has to be nothing, needs to be returned!  Not having a
+    # return statement causes the value of the last line to be returned, which
+    # in this case, is 1 (true), which ends up being printed on the top of
+    # every website and is a pain in the butt to troubleshoot.  Returning undef
+    # causes a bunch of undefined variable messages
+    return "";
 }
 
 1;
@@ -54,7 +60,7 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::HttpHeader::Apache - Apache driver for the OpenPlugin::HttpHeader
+OpenPlugin::HttpHeader::Apache2 - Apache2 driver for the OpenPlugin::HttpHeader
 plugin
 
 =head1 PARAMETERS
@@ -70,7 +76,7 @@ plugin.  See the L<Request|OpenPlugin::Request> plugin for more information.
 
 =item * driver
 
-Apache
+Apache2
 
 As this is a child plugin of the Request plugin, the configuration of this
 plugin should be embedded within the configuration for the Request plugin.

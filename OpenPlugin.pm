@@ -12,7 +12,7 @@ use constant PLUGIN     => '_plugin';
 use constant PLUGINCONF => '_pluginconf';
 use constant INSTANCE   => '_instance';
 
-$OpenPlugin::VERSION = '0.10';
+$OpenPlugin::VERSION = '0.11';
 
 # We'll need the logger var throughout this entire file
 my $logger;
@@ -162,7 +162,7 @@ sub get_drivers {
     return sort keys %{ $self->{ PLUGINCONF() }{ $plugin }{'driver'} }
 }
 
-# Save any info that we have relating the a plugins configuration
+# Save any info that we have relating to a plugins configuration
 sub set_plugin_info {
     my ( $self, $plugin, $nested_plugin ) = @_;
 

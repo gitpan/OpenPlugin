@@ -6,6 +6,31 @@ Key:
 ** An optional feature has been added that is probably worth checking out
 *** This is a new feature that will likely require a change in your code
 
+Changes since 0.10
+------------------
+
+* Really add the template for custom exception modules this time.  Whoops.
+
+* Cleaned up the Exception Plugin's log_throw method
+
+* Updated / fixed documentation
+
+* Added more comments where appropriate
+
+* Added more tests
+
+* Disabled the Apache2 Upload plugin, it doesn't work yet.
+
+* The Apache2 Httpheader driver should now work with the most recent mod_perl
+(1.99_09).
+
+* Untaint the session directory
+
+** Exception properties can now be accessed using accessor methods instead of
+as hash keys.  Instead of $@->state->{filename}, you can now say $@->filename.
+For now, the old method will remain for backwards compatability.
+
+
 Changes since 0.09
 ------------------
 

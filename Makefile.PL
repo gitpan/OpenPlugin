@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.49 2003/04/28 17:37:28 andreychek Exp $
+# $Id: Makefile.PL,v 1.51 2003/08/28 19:19:33 andreychek Exp $
 
 use lib "./inc";
 use strict;
@@ -139,7 +139,7 @@ sub new {
             },
             Apache  => {
                 deps => [ 'Apache::Request'   => '0.30' ],
-                meta => { -install            => 1,
+                meta => { -install            => 0,
                           -test               => 't/request_apache.t' },
             },
             CGI     => {

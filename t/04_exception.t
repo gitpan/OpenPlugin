@@ -1,9 +1,9 @@
 #!/usr/bin/perl
 
-# $Id: 04_exception.t,v 1.2 2002/10/12 04:00:21 andreychek Exp $
+# $Id: 04_exception.t,v 1.3 2003/05/13 19:00:48 andreychek Exp $
 
 use strict;
-use Test::More  tests => 5;
+use Test::More  tests => 10;
 
 use lib "./t";
 use OpenPluginTests( "get_config" );
@@ -45,4 +45,30 @@ eval { $OP->exception->throw("Test Exception Thrown: ",
 {
     my @stack = $@->clear_stack();
     ok( "$stack[0]" eq "", "Clear Error Stack" );
+}
+
+# Test 6: Test filename accessor method
+{
+    ok( $@->filename eq "t/04_exception.t", "Filename Accessor Method" );
+}
+
+# Test 7: Test line accessor method
+{
+    ok( $@->line eq "15", "Line # Accessor Method" );
+}
+
+# Test 8: Test message accessor method
+{
+    ok( $@->message eq "Test Exception Thrown: Exceptional test! (ok)",
+                       "Message Accessor Method" );
+}
+
+# Test 9: Test message accessor method
+{
+    ok( $@->method eq "(eval)", "Method Name Accessor Method" );
+}
+
+# Test 10: Test package accessor method
+{
+    ok( $@->package eq "main" );
 }

@@ -1,12 +1,12 @@
 package OpenPlugin::Upload::Apache2;
 
-# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:26 andreychek Exp $
+# $Id: Apache2.pm,v 1.3 2003/08/28 19:19:33 andreychek Exp $
 
 use strict;
 use OpenPlugin::Upload();
 use base   qw( OpenPlugin::Upload );
 
-$OpenPlugin::Upload::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Upload::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -16,15 +16,15 @@ sub init {
     # better way to do this though.
     return $self unless $self->OP->request->object;
 
-    foreach my $upload ( $self->OP->request->object->upload() ) {
-        $self->set_incoming({
-            name         => $upload->name,
-            content_type => $upload->type,
-            size         => $upload->size,
-            filehandle   => $upload->fh,
-            filename     => $upload->filename,
-        });
-    }
+    #foreach my $upload ( $self->OP->request->object->upload() ) {
+    #    $self->set_incoming({
+    #        name         => $upload->name,
+    #        content_type => $upload->type,
+    #        size         => $upload->size,
+    #        filehandle   => $upload->fh,
+    #        filename     => $upload->filename,
+    #    });
+    #}
 
     return $self;
 }
@@ -36,6 +36,11 @@ sub init {
 =head1 NAME
 
 OpenPlugin::Upload::Apache - Apache driver for the OpenPlugin::Upload plugin
+
+=head1 NOTE
+
+The Apache2 Upload plugin does not work as expected, and should not be used.
+It will be working soon.
 
 =head1 PARAMETERS
 
