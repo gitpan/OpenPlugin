@@ -1,6 +1,6 @@
 package OpenPlugin::Config;
 
-# $Id: Config.pm,v 1.24 2002/10/11 20:37:37 andreychek Exp $
+# $Id: Config.pm,v 1.28 2003/04/28 17:43:48 andreychek Exp $
 
 use strict;
 use Cwd            qw();
@@ -10,7 +10,7 @@ use Log::Log4perl  qw( get_logger );
 use OpenPlugin::Plugin;
 
 @OpenPlugin::Config::ISA     = qw( OpenPlugin::Plugin );
-$OpenPlugin::Config::VERSION = sprintf("%d.%02d", q$Revision: 1.24 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Config::VERSION = sprintf("%d.%02d", q$Revision: 1.28 $ =~ /(\d+)\.(\d+)/);
 
 # Package var to keep track of files read in.  Is there a better way to do
 # this?
@@ -51,33 +51,25 @@ sub find_config_location {
     my ( $class, $initial_filename, $other_root_dir ) = @_;
     $logger->info( "Finding configuration location from ($initial_filename)" );
 
-    # TODO: What sort of regex should we use to untaint a directory/filename?
+    return ( "", "" ) unless $initial_filename;
 
     # Get initial config dir, and untaint
-    # FIXME -- We should come up with some better taint checking
     my $initial_dir  = File::Basename::dirname( $initial_filename );
-    $initial_dir =~ m/^(.*)$/;
-    $initial_dir = $1;
+    ( $initial_dir ) = $initial_dir =~ m/^(.*)$/ if -d $initial_dir;
 
     # Get the config file name, and untaint
-    # FIXME -- We should come up with some better taint checking
     my $config_file  = File::Basename::basename( $initial_filename );
-    $config_file =~ m/^(.*)$/;
-    $config_file = $1;
+    ( $config_file ) = $config_file =~ m/^(.*)$/ if -f $initial_filename;
 
     # Get the current working directory, and untaint
-    # FIXME -- We should come up with some better taint checking
     my $current_dir  = Cwd::cwd;
-    $current_dir =~ m/^(.*)$/;
-    $current_dir = $1;
+    ( $current_dir ) = $current_dir =~ m/^(.*)$/ if -d $current_dir;
 
     chdir( $initial_dir );
 
     # Get path to the current dir, and untaint
-    # FIXME -- We should come up with some better taint checking
     my $config_dir   = Cwd::cwd;
-    $config_dir =~ m/^(.*)$/;
-    $config_dir = $1;
+    ( $config_dir ) = $config_dir =~ m/^(.*)$/ if -d $config_dir;
 
     chdir( $current_dir );
     unless ( -f join( '/', $config_dir, $config_file ) ) {
@@ -371,7 +363,7 @@ of C<$section> or a parameter in C<$sub_section> of C<$section>.
 
 Returns: whatever was deleted.
 
-B<get_config_driver( $config_src[, $config_type ] )>
+B<get_config_driver( $config_src [, $config_type ] )>
 
 Retrieves the driver used for a particular configuration
 source. Generally we can tell what type of driver is necessary from
@@ -387,7 +379,10 @@ None known.
 
 =head1 TO DO
 
-None known.
+Currently, you can include at most one file.  Parts of the Config plugin,
+particularly the include logic, should be rewritten to be a bit more flexible
+(such as to handle more than one included file, etc).  One way to do this might
+be to use Hash::Merge.
 
 =head1 SEE ALSO
 
@@ -396,7 +391,7 @@ that driver.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

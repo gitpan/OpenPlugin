@@ -1,11 +1,11 @@
 package OpenPlugin::Param;
 
-# $Id: Param.pm,v 1.15 2002/10/23 15:07:29 andreychek Exp $
+# $Id: Param.pm,v 1.16 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use base qw( OpenPlugin::Plugin );
 
-$OpenPlugin::Param::VERSION = sprintf("%d.%02d", q$Revision: 1.15 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Param::VERSION = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'param' }
@@ -107,7 +107,7 @@ that driver.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

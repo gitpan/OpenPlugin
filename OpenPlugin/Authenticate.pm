@@ -1,12 +1,12 @@
 package OpenPlugin::Authenticate;
 
-# $Id: Authenticate.pm,v 1.16 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Authenticate.pm,v 1.17 2003/04/03 01:51:23 andreychek Exp $
 
 use strict;
 use OpenPlugin::Plugin();
 
 use base qw( OpenPlugin::Plugin );
-$OpenPlugin::Authenticate::VERSION = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Authenticate::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'authenticate' }
@@ -46,9 +46,9 @@ whether or not the correct username and password were entered by the user.
 B<authenticate( \%params )>
 
 Return true if the parameters specified a valid user, false if not. The
-parameters depend on the driver.  Generally, each driver takes a 'username' and
-'password' parameter.  Depending on the security mechanism and the datasource,
-there may be additional parameters you'll need to provide.
+required parameters depend on the driver.  Generally, each driver takes a
+'username' and 'password' parameter.  Depending on the security mechanism and
+the datasource, there may be additional parameters you'll need to provide.
 
 =head1 BUGS
 
@@ -75,7 +75,7 @@ that driver.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,6 +1,6 @@
 package OpenPlugin::Exception;
 
-# $Id: Exception.pm,v 1.23 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Exception.pm,v 1.30 2003/04/28 17:43:48 andreychek Exp $
 
 use strict;
 use base                  qw( OpenPlugin::Plugin );
@@ -8,7 +8,7 @@ use base                  qw( OpenPlugin::Plugin );
 use overload '""' => sub { $_[0]->to_string };
 use Devel::StackTrace();
 
-$OpenPlugin::Exception::VERSION = sprintf("%d.%02d", q$Revision: 1.23 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Exception::VERSION = sprintf("%d.%02d", q$Revision: 1.30 $ =~ /(\d+)\.(\d+)/);
 
 my @STACK  = ();
 my @FIELDS = qw( message package filename line method trace );
@@ -20,10 +20,34 @@ sub OP   { return $_[0]->{_m}{OP} }
 ########################################
 # CLASS METHODS
 
+sub log_throw {
+    my ( $self, @message ) = @_;
+
+    my $params = ( ref $message[-1] eq 'HASH' )
+                   ? pop( @message ) : {};
+
+    my $msg    = join( '', @message );
+
+    $Log::Log4perl::caller_depth++;
+    $self->OP->log->fatal( @_ );
+    $Log::Log4perl::caller_depth--;
+
+    $self->throw( $msg );
+
+}
+
 sub throw {
     my ( $self, @message ) = @_;
 
     my $class = ref( $self ) || $self;
+
+    # Allow exception's to be rethrown, without further processing
+    if ( ref $message[0] ) {
+        my $rethrown = $message[0];
+        if ( UNIVERSAL::isa( $rethrown, __PACKAGE__ ) ) {
+            die $rethrown;
+        }
+    }
 
     my $params = ( ref $message[-1] eq 'HASH' )
                    ? pop( @message ) : {};
@@ -31,7 +55,7 @@ sub throw {
     my $msg    = join( '', @message );
 
     # Set a default in case throw is called without a value
-    $msg ||= "An unknown error has occurred.";
+    $msg ||= "Nuts, an error has occurred.";
 
     foreach my $field ( $self->get_fields() ) {
         $self->state( $field, $params->{ $field } ) if ( $params->{ $field } );
@@ -41,18 +65,11 @@ sub throw {
 
     $self->state( 'message', $msg );
 
-    my @initial_call = caller;
+    my @initial_call = $self->custom_caller;
     $self->state( 'package',  $initial_call[0] );
     $self->state( 'filename', $initial_call[1] );
     $self->state( 'line',     $initial_call[2] );
-
-    # Grab the method name separately, since the subroutine call
-    # doesn't seem to be matched up properly with the other caller()
-    # stuff when we do caller(0). Weird.
-
-    my @added_call = caller(1);
-    $added_call[3] =~ s/^.*:://;
-    $self->state( 'method', $added_call[3] );
+    $self->state( 'method',   $initial_call[3] );
 
     $self->state( 'trace', Devel::StackTrace->new());
 
@@ -60,10 +77,30 @@ sub throw {
 
     push @STACK, $self;
 
-    $self->OP->log->fatal( $self->state->{ message } );
-
     die $self;
 
+}
+
+sub custom_caller {
+    # the below could all be just:
+    # my ($pack, $file, $line) = caller(2);
+    # but if we every bury this further, it'll break. So we do this
+    # little trick stolen and paraphrased from first from Carp/Heavy.pm, then
+    # from Log4perl/Logger.pm
+
+    my $i = 0;
+    my (undef, $localfile, undef) = caller($i++);
+    my ($pack, $file, $line, $method);
+    do {
+        ($pack, $file, $line) = caller($i++);
+    } while ($file && $file eq $localfile);
+
+    # Grab the method name separately, since the subroutine call
+    # doesn't seem to be matched up properly with the other caller()
+    # stuff when we do caller(0). Weird.
+    $method = (caller($i))[3];
+
+    return ( $pack, $file, $line, $method );
 }
 
 sub initialize {}
@@ -81,7 +118,7 @@ sub clear_stack { @STACK = ()   }
 sub creation_location {
     my ( $self ) = @_;
     return 'Created in package [' . $self->state->{ package }  . '] ' .
-                    'in method [' . $self->state->{ method }   . ']; '.
+                    'in method [' . $self->state->{ method }   . '] ' .
                       'at file [' . $self->state->{ filename } . '] ' .
                       'at line [' . $self->state->{ line }     . ']';
 }
@@ -117,7 +154,15 @@ OpenPlugin::Exception - Base class for exceptions in OpenPlugin
 
 =head1 SYNOPSIS
 
- # As a user of a module developed using OpenPlugin
+ # Throw an exception
+
+ $OP->exception->throw("An exception has occurred");
+
+ # Throw an exception, and log the message using the Log Plugin
+
+ $OP->exception->log_throw("An exception has occurred");
+
+ # Catch an exception, get more info on it with creation_location()
 
  eval { $OP->session->save( $session ) };
  if ( $@ ) {
@@ -153,8 +198,18 @@ OpenPlugin::Exception - Base class for exceptions in OpenPlugin
 
  my $rv = eval { $dbh->do( $sql ) };
  if ( $@ ) {
-     $OP->exception->DBI->throw( $@, { sql    => $sql,
-                                       action => 'do' } );
+     $OP->exception('DBI')->throw( $@, { sql    => $sql,
+                                         action => 'do' } );
+ }
+
+ # Catch an exception, do some cleanup then rethrow it
+
+ my $rv = eval { $OP->session->fetch( $session_id ) };
+ if ( $@ ) {
+     my $exception = $@;
+     $OP->datasource->disconnect('Database_DataSource');
+     $OP->datasource->disconnect('LDAP_DataSource');
+     $OP->exception->throw( $exception );
  }
 
 =head1 DESCRIPTION
@@ -196,6 +251,11 @@ initialization/tracking they need to do. (See L<SUBCLASSING> below.)
 =item 5. Track the object in our internal stack.
 
 =back
+
+B<log_throw( $message, [ \%params ] )>
+
+Same as C<throw>, except that it logs the message first using the Log plugin.
+Logging occurs at the C<fatal> level.
 
 B<get_stack()>
 
@@ -276,29 +336,31 @@ at the point where the exception was thrown.
 
 =head1 SUBCLASSING
 
-It is very easy to create your own OpenPlugin or application errors:
+It is very easy to create your own OpenPlugin::Exception or application errors:
 
  package My::Custom::Exception;
 
  use strict;
  use base qw( OpenPlugin::Exception );
 
-Easy! If you want to include different information that can be passed
-via C<new()>:
+Easy! A subclass will often allow developers to pass in additional parameters:
 
  package My::Custom::Exception;
 
  use strict;
  use base qw( OpenPlugin::Exception );
  my @FIELDS = qw( this that );
- My::Custom::Exception->mk_accessors( @FIELDS );
 
  sub get_fields { return ( $_[0]->SUPER::get_fields(), @FIELDS ) }
 
 And now your custom exception can take extra parameters:
 
- $self->My::Custom::Exception->throw( $@, { this => 'bermuda shorts',
-                                            that => 'teva sandals'    });
+ $self->exception('name')->throw( $@, { this => 'bermuda shorts',
+                                        that => 'teva sandals'    });
+
+The C<name> parameter being passed into the C<exception> plugin above is the
+driver name given to your subclass.  Available drivers are defined in the
+OpenPlugin-drivermap.conf file, and enabled in the OpenPlugin.conf file.
 
 If you want to do extra initialization, data checking or whatnot, just
 create a method C<initialize()>. It gets called just before the C<die>
@@ -313,8 +375,9 @@ is called in C<throw()>. Example:
      my ( $self, $params ) = @_;
      $COUNT++;
      if ( $COUNT > 5 ) {
-         $self->message(
-               $self->message . "-- More than five errors?! ($COUNT) Whattsamatta?" );
+         $self->state->{ message } (
+               $self->state->{ message } .
+                   "-- More than five errors?! ($COUNT) Whattsamatta?" );
      }
  }
 
@@ -326,15 +389,23 @@ None known.
 
 Nothing known.
 
+=head1 NOTES
+
+This module is very similar to L<SPOPS::Exception> distributed with L<SPOPS> by
+Chris Winters.  Much of the code was copied and pasted into here, after the
+usual tweaking, of course :-)  A big thanks to Chris for all his help.
+
 =head1 SEE ALSO
+
+L<OpenPlugin>
 
 L<Devel::StackTrace|Devel::StackTrace>
 
-L<Exception::Class|Exception::Class> for lots of good ideas.
-
 L<SPOPS::Exception|SPOPS::Exception>
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+L<Exception::Class|Exception::Class> for lots of good ideas.
+
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

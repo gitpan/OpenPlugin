@@ -1,10 +1,10 @@
 package OpenPlugin::Utility;
 
-# $Id: Utility.pm,v 1.6 2002/09/24 03:07:02 andreychek Exp $
+# $Id: Utility.pm,v 1.7 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 
-$OpenPlugin::Utility::VERSION = sprintf("%d.%02d", q$Revision: 1.6 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Utility::VERSION = sprintf("%d.%02d", q$Revision: 1.7 $ =~ /(\d+)\.(\d+)/);
 use Digest::MD5();
 
 # Given an expiration in one of various formats, convert it to seconds
@@ -81,7 +81,7 @@ objects or from OpenPlugin classes.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,13 +1,13 @@
 package OpenPlugin::Session::ApacheSession;
 
-# $Id: ApacheSession.pm,v 1.1 2002/10/05 04:50:12 andreychek Exp $
+# $Id: ApacheSession.pm,v 1.4 2003/04/03 01:51:26 andreychek Exp $
 
 use strict;
 use OpenPlugin::Session();
 use base        qw( OpenPlugin::Session );
 use Apache::Session::Flex();
 
-$OpenPlugin::Session::ApacheSession::VERSION = sprintf("%d.%02d", q$Revision: 1.1 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Session::ApacheSession::VERSION = sprintf("%d.%02d", q$Revision: 1.4 $ =~ /(\d+)\.(\d+)/);
 
 
 sub init {
@@ -66,27 +66,42 @@ sub get_session_data {
 sub _init_params {
     my $self = shift;
 
-    my $params = $self->OP->config->{'plugin'}{'session'}{'parameters'};
+    my $params =
+        $self->OP->config->{'plugin'}{'session'}{'driver'}{'ApacheSession'};
 
-    # Set up some defaults
+    # Some reasonable (IMHO) defaults if we haven't been told certain parameters
     $params->{Store}         ||= "File";
-    $params->{Directory}     ||= "/tmp";
-    $params->{LockDirectory} ||= "/tmp";
-    $params->{Generate}      ||= "MD5";
     $params->{Lock}          ||= "Null";
+    $params->{Generate}      ||= "MD5";
     $params->{Serialize}     ||= "Storable";
 
-    # Untaint the directory names
-    # TODO: What regex should we use on directories?
+    # Untaint values Apache::Session uses as module names
+    foreach my $key ( qw( Store Serialize Lock Generate ) ) {
+        $params->{ $key } =~ m/^([-\w]+)$/;
+        $params->{ $key } = $1;
+    }
 
-    $params->{Directory} =~ m/(.*)/;
-    $params->{Directory} = $1;
+    if ( $params->{Store} eq "File" ) {
+        $params->{Directory}     ||= "/tmp";
+        $params->{LockDirectory} ||= "/tmp";
 
-    $params->{LockDirectory} =~ m/(.*)/;
-    $params->{LockDirectory} = $1;
+        if ( -d $params->{Directory} ) {
+            $params->{Directory} =~ m/^(.*)$/;
+            $params->{Directory} = $1;
+        }
 
-    $params->{Store} =~ m/^([A-Za-z0-9]+)$/;
-    $params->{Store} = $1;
+        if ( -d $params->{LockDirectory} ) {
+            $params->{LockDirectory} =~ m/^(.*)$/;
+            $params->{LockDirectory} = $1;
+        }
+
+    }
+
+    if ( $self->OP->config->{'plugin'}{'session'}{'datasource'} ) {
+
+        $params->{'Handle'} =
+         $self->OP->datasource->connect( $self->OP->config->{'plugin'}{'session'}{'datasource'} );
+    }
 
     return $params;
 }
@@ -154,7 +169,7 @@ L<OpenPlugin::Session|OpenPlugin::Session>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

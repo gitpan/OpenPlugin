@@ -6,6 +6,47 @@ Key:
 ** An optional feature has been added that is probably worth checking out
 *** This is a new feature that will likely require a change in your code
 
+Changes since 0.09
+------------------
+
+* Numerous documentation additions and updates
+
+* It appears that File::Basename::dirname doesn't like being given a blank
+parameter anymore (5.8.0+).  If you got an error about "fileparse(): need a
+valid pathname", that should be taken care of now.  Thanks to Alex Beamish for
+finding and reporting this one.
+
+* Calling an invalid plugin with an OpenPlugin object now produces a more
+useful error message.
+
+* The documentation for creating subclasses to the Exception Plugin were
+incorrect.  They have been corrected.
+
+* The fetch call in the Session plugin should always return undef if the
+session has expired.
+
+** Included a template for how to create custom exception modules.
+
+** The Exception plugin now allows you to catch and then rethrow exceptions
+if desired.
+
+** The Exception plugin has a new method called log_throw, which first logs a
+message, then raises an exception.  The throw method by itself no longer logs
+the message.
+
+** The log plugin now checks to see who is calling it, so it can act
+differently based on the caller.  This is one of the major benefits of
+Log4perl, and now OpenPlugin is able to make use of it.  You just need to add
+new "loggers" to the config file to define different logging methods.
+
+** Added mod_perl 2.0 support via the Apache2 driver.  Currently, there is no
+Cookie or Upload plugin available with this driver, but Request, Param, and
+Httpheader are working.
+
+** The Session plugin now properly supports Apache::Session drivers in addition
+to just "file".  Specifically, DBI was tested, but others should work too.
+
+
 Changes since 0.08
 ------------------
 

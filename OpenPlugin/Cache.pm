@@ -1,12 +1,12 @@
 package OpenPlugin::Cache;
 
-# $Id: Cache.pm,v 1.16 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Cache.pm,v 1.17 2003/04/03 01:51:23 andreychek Exp $
 
 use strict;
 use OpenPlugin::Plugin;
 
 @OpenPlugin::Cache::ISA     = qw( OpenPlugin::Plugin );
-$OpenPlugin::Cache::VERSION = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Cache::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'cache' }
@@ -110,7 +110,7 @@ L<Cache::Cache>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

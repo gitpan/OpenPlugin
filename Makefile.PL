@@ -1,4 +1,4 @@
-# $Id: Makefile.PL,v 1.45 2002/10/21 15:55:02 andreychek Exp $
+# $Id: Makefile.PL,v 1.49 2003/04/28 17:37:28 andreychek Exp $
 
 use lib "./inc";
 use strict;
@@ -48,10 +48,13 @@ ExtUtils::AutoInstall->import (
       'Storable'            => '1.011',
       'Devel::StackTrace'   => '',
       'Time::HiRes'         => '1.20',
+      'Archive::Tar'        => '0.23',
       @optional_modules,
       'Params::Validate'    => '',
+      'XML::DOM'            => '1.29',
       'Log::Dispatch'       => '2.00',
       'Log::Log4perl'       => '0.25',
+      'HTML::Template'      => '',
       'CGI::Application'    => '2.6',
       @plugin_dependencies,
    ],
@@ -101,6 +104,7 @@ sub config_openplugin {
         "Cannot copy conf directory to $data_file: $!";
 
     print "OpenPlugin config files are now in $data_file\n";
+    return {};
 }
 
 package OpenPlugin::Installer;
@@ -128,8 +132,13 @@ sub new {
 
     my $self = {
         'Request' => {
+            Apache2  => {
+                deps => [ 'Apache2'   => '' ],
+                meta => { -install            => 0,
+                          -test               => 't/request_apache2.t' },
+            },
             Apache  => {
-                deps => [ 'Apache::Request'   => '' ],
+                deps => [ 'Apache::Request'   => '0.30' ],
                 meta => { -install            => 1,
                           -test               => 't/request_apache.t' },
             },
@@ -155,7 +164,7 @@ sub new {
         },
         Cache           => {
             File    => {
-                deps => [ 'Digest::SHA1'  => '',
+                deps => [ 'Digest::SHA1'  => '2.02',
                           'Cache::Cache'  => '', ],
                 meta => { -install        => 1,
                           -test           => 't/cache_file.t'  },

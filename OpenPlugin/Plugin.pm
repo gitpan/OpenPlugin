@@ -1,6 +1,6 @@
 package OpenPlugin::Plugin;
 
-# $Id: Plugin.pm,v 1.18 2002/10/08 03:25:41 andreychek Exp $
+# $Id: Plugin.pm,v 1.22 2003/04/28 17:43:48 andreychek Exp $
 
 use strict;
 use Class::Factory  0.04 qw();
@@ -9,7 +9,7 @@ use Log::Log4perl        qw( get_logger );
 
 use constant STATE  => '_state';
 
-$OpenPlugin::Plugin::VERSION = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Plugin::VERSION = sprintf("%d.%02d", q$Revision: 1.22 $ =~ /(\d+)\.(\d+)/);
 
 my $logger = get_logger();
 
@@ -23,6 +23,7 @@ sub load {
 sub OP {
     my $self = shift;
     my $class = ref $self;
+
     $self->{_m}{OP}->exception->throw("In ($class): OP() must be implemented in plugin");
 }
 
@@ -102,8 +103,8 @@ OpenPlugin::Plugin - Base class for all plugins
 
 =head1 DESCRIPTION
 
-This class provides a series of methods which can all be overloaded by the
-individual plugins or drivers.
+This class is a base class for all plugins, and provides a series of methods
+which can all be overloaded by the individual plugins or drivers.
 
 =head1 METHODS
 
@@ -167,11 +168,13 @@ Nothing known.
 
 =head1 SEE ALSO
 
+L<OpenPlugin>
+
 L<Class::Factory>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

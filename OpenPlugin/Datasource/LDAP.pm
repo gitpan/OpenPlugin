@@ -1,13 +1,13 @@
 package OpenPlugin::Datasource::LDAP;
 
-# $Id: LDAP.pm,v 1.13 2002/09/26 17:49:34 andreychek Exp $
+# $Id: LDAP.pm,v 1.14 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use Data::Dumper  qw( Dumper );
 use Net::LDAP     qw();
 
 @OpenPlugin::Datasource::LDAP::ISA      = ();
-$OpenPlugin::Datasource::LDAP::VERSION  = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Datasource::LDAP::VERSION  = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
 
 use constant LDAP_PORT    => 389;
 use constant LDAP_DEBUG   => 0;
@@ -240,7 +240,7 @@ L<Net::LDAP|Net::LDAP>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

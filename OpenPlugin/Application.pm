@@ -1,10 +1,10 @@
-# $Id: Application.pm,v 1.27 2002/10/23 17:10:34 andreychek Exp $
+# $Id: Application.pm,v 1.29 2003/04/28 17:43:47 andreychek Exp $
 
 package OpenPlugin::Application;
 
 use strict;
 
-$OpenPlugin::Application::VERSION = sprintf("%d.%02d", q$Revision: 1.27 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Application::VERSION = sprintf("%d.%02d", q$Revision: 1.29 $ =~ /(\d+)\.(\d+)/);
 
 use OpenPlugin();
 use CGI::Application 2.6 qw();
@@ -144,7 +144,7 @@ in this document.
 
 It is not necessary to use OpenPlugin::Application in order to build web
 applications using OpenPlugin.  This plugin is meant to be for your
-convienence -- to help you structure you web applications in a manner which
+convenience -- to help you structure you web applications in a manner which
 makes sense, and is reusable.
 
 =head1 USAGE
@@ -194,7 +194,7 @@ typical module written in CGI::Application, with just a few exceptions:
 The second line of the module will read C<use base "OpenPlugin::Application";>
 instead of C<use base "CGI::Application";>.
 
-=item * OP() method
+=item * OP() method available
 
 A method called C<OP> was created as an alias for C<query>.  You may use the
 two interchangably.
@@ -205,6 +205,9 @@ CGI::Application offers methods to handle headers for you.  While these will
 work, I highly recommend using OpenPlugin's HttpHeader and Cookie plugins
 instead, these offer far more flexibility and functionality than do the ones
 provided with CGI::Application.
+
+The HttpHeader C<send_outgoing()> method will be called for you, you just need
+to add your headers to the outgoing queue by calling httpheader->set_outgoing.
 
 =back
 
@@ -301,7 +304,7 @@ L<OpenPlugin>, L<CGI::Application>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

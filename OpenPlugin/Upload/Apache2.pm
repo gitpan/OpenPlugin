@@ -1,14 +1,12 @@
-package OpenPlugin::HttpHeader::Apache;
+package OpenPlugin::Upload::Apache2;
 
-# $Id: Apache.pm,v 1.33 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:26 andreychek Exp $
 
 use strict;
-use OpenPlugin::HttpHeader();
-use base          qw( OpenPlugin::HttpHeader );
+use OpenPlugin::Upload();
+use base   qw( OpenPlugin::Upload );
 
-$OpenPlugin::HttpHeader::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.33 $ =~ /(\d+)\.(\d+)/);
-
-# This driver will only work if used under mod_perl
+$OpenPlugin::Upload::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -16,46 +14,28 @@ sub init {
     # This is here for now because when compiling this module at Apache startup
     # time, we don't have an Apache::Request object yet.  We should find a
     # better way to do this though.
-    return $self unless ( $self->OP->request->object );
+    return $self unless $self->OP->request->object;
 
-    # Tell OpenPlugin about each header we were sent
-    foreach my $header ($self->OP->request->object->headers_in()){
-        $self->set_incoming( $header,
-                $self->OP->request->object->header_in( $header ));
+    foreach my $upload ( $self->OP->request->object->upload() ) {
+        $self->set_incoming({
+            name         => $upload->name,
+            content_type => $upload->type,
+            size         => $upload->size,
+            filehandle   => $upload->fh,
+            filename     => $upload->filename,
+        });
     }
 
     return $self;
 }
 
-*send = \*send_outgoing;
-
-sub send_outgoing {
-    my ( $self, $type ) = @_;
-
-    $type ||= "text/html";
-
-    foreach my $name ( $self->get_outgoing ) {
-        $self->OP->request->object->header_out( $name,
-                                                $self->get_outgoing( $name ));
-    }
-
-    # If the cookie plugin is loaded, check to see if we need to send any
-    # cookies along with the header
-    $self->OP->cookie->bake if grep /^cookie$/, $self->OP->loaded_plugins;
-
-    $self->OP->request->object->send_http_header( $type );
-}
-
 1;
-
-__END__
 
 =pod
 
 =head1 NAME
 
-OpenPlugin::HttpHeader::Apache - Apache driver for the OpenPlugin::HttpHeader
-plugin
+OpenPlugin::Upload::Apache - Apache driver for the OpenPlugin::Upload plugin
 
 =head1 PARAMETERS
 
@@ -88,6 +68,11 @@ None known.
 Nothing known.
 
 =head1 SEE ALSO
+
+L<Apache|Apache>
+L<Apache::Request|Apache::Request>
+L<OpenPlugin|OpenPlugin>
+L<OpenPlugin::Upload|OpenPlugin::Upload>
 
 =head1 COPYRIGHT
 

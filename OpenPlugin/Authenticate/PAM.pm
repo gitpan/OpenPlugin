@@ -1,13 +1,13 @@
 package OpenPlugin::Authenticate::PAM;
 
-# $Id: PAM.pm,v 1.13 2002/10/01 12:57:39 andreychek Exp $
+# $Id: PAM.pm,v 1.14 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use OpenPlugin::Authenticate();
 use base          qw( OpenPlugin::Authenticate );
 use Authen::PAM;
 
-$OpenPlugin::Authenticate::PAM::VERSION = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Authenticate::PAM::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
 
 
 sub authenticate {
@@ -104,7 +104,7 @@ None known.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

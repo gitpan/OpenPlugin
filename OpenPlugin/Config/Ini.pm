@@ -1,12 +1,12 @@
 package OpenPlugin::Config::Ini;
 
-# $Id: Ini.pm,v 1.13 2002/09/26 17:49:34 andreychek Exp $
+# $Id: Ini.pm,v 1.14 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use base            qw( OpenPlugin::Config );
 use Log::Log4perl   qw( get_logger );
 
-$OpenPlugin::Config::Ini::VERSION = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Config::Ini::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
 
 my $logger = get_logger();
 
@@ -370,7 +370,7 @@ L<Config::IniFiles|Config::IniFiles>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

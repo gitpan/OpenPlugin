@@ -1,11 +1,11 @@
 package OpenPlugin::Session;
 
-# $Id: Session.pm,v 1.42 2002/10/10 16:02:43 andreychek Exp $
+# $Id: Session.pm,v 1.46 2003/04/28 17:43:49 andreychek Exp $
 
 use strict;
 use base                  qw( OpenPlugin::Plugin );
 
-$OpenPlugin::Session::VERSION = sprintf("%d.%02d", q$Revision: 1.42 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Session::VERSION = sprintf("%d.%02d", q$Revision: 1.46 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'session' }
@@ -56,6 +56,8 @@ sub fetch {
     }
 
     my $session = $self->get_session_data( $session_id );
+
+    return undef unless defined $session;
 
     $session = $self->_init_session_data( $session, {} );
 
@@ -146,6 +148,7 @@ sub _init_session_data {
                         $params->{ expires } ||
                         $self->OP->config->{'plugin'}{'session'}{'expires'};
 
+    # If _start exists, we've done this already
     return $session if exists $session->{'_start'};
 
     $self->OP->log->info( "Initiating session data.");
@@ -267,9 +270,10 @@ B<fetch( $session_id )>
 
 Given a session_id, retrieve an existing session.
 
-Returns a hashref containing all the session data.
+Returns a hashref containing all the session data, or undef if the session has
+expired.
 
-B<save( $session_data, [ { id => $id, $expires => $date } ] )>
+B<save( \%session_data, [ { id => $id, $expires => $date } ] )>
 
 Save a session.  If a session is already open, the existing session id is used.
 If a session id does not yet exist, a new one is created.
@@ -286,8 +290,11 @@ B<session_data>: Session data to save.  This should be a reference to a hash.
 
 =item *
 
-B<id> (optional): Identifier (key) for the cached data. If not specified, an id will be
-randomly chosen for you.
+B<id> (optional): Session ID to associate with the data being saved.  If not
+specified, and you haven't called C<fetch> yet this session, an id will be
+randomly chosen for you.  If you have called C<fetch>, the same ID used to
+fetch the session will be used to save it.  Usually, you don't need to pass
+this in.
 
 =item *
 
@@ -302,8 +309,8 @@ B<expires> (optional): Expiration time, in the format:
  "+2y"  - in 2 years
  "-3m"  - 3 minutes ago(!)
 
-If not specified, the item will have the same cache time as is listed as a
-default in the config file.
+If not specified, the item will have the same expiration time as is listed in
+the config file.
 
 =back
 
@@ -345,13 +352,15 @@ some sort of param() method to save each piece of data.  Maybe.
 
 =head1 SEE ALSO
 
+L<OpenPlugin>
+
 L<Apache::Session|Apache::Session>
 
 L<CGI::Session|CGI::Session>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

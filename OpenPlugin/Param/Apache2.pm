@@ -1,14 +1,13 @@
-package OpenPlugin::HttpHeader::Apache;
+package OpenPlugin::Param::Apache2;
 
-# $Id: Apache.pm,v 1.33 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
-use OpenPlugin::HttpHeader();
-use base          qw( OpenPlugin::HttpHeader );
+use OpenPlugin::Param();
+use base   qw( OpenPlugin::Param );
 
-$OpenPlugin::HttpHeader::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.33 $ =~ /(\d+)\.(\d+)/);
 
-# This driver will only work if used under mod_perl
+$OpenPlugin::Param::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -16,34 +15,31 @@ sub init {
     # This is here for now because when compiling this module at Apache startup
     # time, we don't have an Apache::Request object yet.  We should find a
     # better way to do this though.
-    return $self unless ( $self->OP->request->object );
+    return $self unless $self->OP->request->object;
 
-    # Tell OpenPlugin about each header we were sent
-    foreach my $header ($self->OP->request->object->headers_in()){
-        $self->set_incoming( $header,
-                $self->OP->request->object->header_in( $header ));
+    my %params = $self->parse_args( $self->OP->request->object->args() );
+
+    # Tell OpenPlugin about each parameter we were sent
+    while ( my ( $field, $value ) = each %params ) {
+
+        $self->set_incoming( $field, $value );
     }
 
     return $self;
 }
 
-*send = \*send_outgoing;
+# This sub is taken from Apache 2's Apache::compat.  It'll keep up from having
+# to load that module, as this is all we need from it.  It simply takes the
+# query string, and parses it out into a list
+sub parse_args {
+    my ( $self, $string ) = @_;
+    return () unless defined $string and $string;
 
-sub send_outgoing {
-    my ( $self, $type ) = @_;
+    return map {
+        s/%([0-9a-fA-F]{2})/pack("c",hex($1))/ge;
+        $_;
+    } split /[=&;]/, $string, -1;
 
-    $type ||= "text/html";
-
-    foreach my $name ( $self->get_outgoing ) {
-        $self->OP->request->object->header_out( $name,
-                                                $self->get_outgoing( $name ));
-    }
-
-    # If the cookie plugin is loaded, check to see if we need to send any
-    # cookies along with the header
-    $self->OP->cookie->bake if grep /^cookie$/, $self->OP->loaded_plugins;
-
-    $self->OP->request->object->send_http_header( $type );
 }
 
 1;
@@ -54,8 +50,7 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::HttpHeader::Apache - Apache driver for the OpenPlugin::HttpHeader
-plugin
+OpenPlugin::Param::Apache - Apache driver for the OpenPlugin::Param plugin
 
 =head1 PARAMETERS
 
@@ -88,6 +83,11 @@ None known.
 Nothing known.
 
 =head1 SEE ALSO
+
+L<OpenPlugin|OpenPlugin>
+L<OpenPlugin::Param|OpenPlugin::Param>
+L<Apache|Apache>
+L<Apache::Request|Apache::Request>
 
 =head1 COPYRIGHT
 

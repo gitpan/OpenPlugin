@@ -1,6 +1,6 @@
 package OpenPlugin::Authenticate::SMB;
 
-# $Id: SMB.pm,v 1.12 2002/10/01 12:57:39 andreychek Exp $
+# $Id: SMB.pm,v 1.13 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use OpenPlugin::Authenticate();
@@ -12,7 +12,7 @@ use constant SMB_SERVER_ERROR   => 1;
 use constant SMB_PROTOCOL_ERROR => 2;
 use constant SMB_LOGON_ERROR    => 3;
 
-$OpenPlugin::Authenticate::SMB::VERSION = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Authenticate::SMB::VERSION = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
 
 
 # Okay, slurped up this code from OI, but still needs tested :-)
@@ -108,7 +108,7 @@ working right.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,12 +1,12 @@
 package OpenPlugin::Log;
 
-# $Id: Log.pm,v 1.14 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Log.pm,v 1.17 2003/04/28 17:43:48 andreychek Exp $
 
 use strict;
 use OpenPlugin::Plugin;
 
 @OpenPlugin::Log::ISA     = qw( OpenPlugin::Plugin );
-$OpenPlugin::Log::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Log::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'log' }
@@ -33,9 +33,9 @@ OpenPlugin::Log - Log messages
 =head1 SYNOPSIS
 
  $OP->log->debug( "The flyswatter is in the corner." );
- $OP->log->info(  "Successfully opened file $file." );
+ $OP->log->info(  "Successfully read the newspaper." );
  $OP->log->warn(  "Watch out for that tree!" );
- $OP->log->error( "Cannot find specified file." );
+ $OP->log->error( "A general exception error has occurred." );
  $OP->log->fatal( "Humpty Dumpty had a great fall." );
 
 =head1 DESCRIPTION
@@ -53,7 +53,7 @@ information to be logged by setting the log level to C<INFO> or C<DEBUG>.
 
 What happens when you're working with a large application, and you only wish to
 debug one portion of your program?  This is where Log4perl really starts to
-shine.  Using an object-like heirarchy, you can set different logging levels
+shine.  Using an OO-like heirarchy, you can set different logging levels
 for any portion of your application.  Additionally, you can alter the
 destination of the log information based on this same heirarchy.
 
@@ -73,7 +73,8 @@ B<error( $message )>
 
 B<fatal( $message )>
 
-Log C<$message> when at that level or higher.
+Log C<$message> when at that level or higher.  Returns true if a message was
+logged, false otherwise.
 
 B<is_debug()>
 
@@ -109,11 +110,11 @@ None known.
 
 =head1 SEE ALSO
 
-L<Log::Log4perl>
+L<OpenPlugin>, L<Log::Log4perl>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

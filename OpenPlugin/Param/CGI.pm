@@ -1,13 +1,13 @@
 package OpenPlugin::Param::CGI;
 
-# $Id: CGI.pm,v 1.17 2002/10/08 20:11:43 andreychek Exp $
+# $Id: CGI.pm,v 1.18 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use OpenPlugin::Param();
 use base   qw( OpenPlugin::Param );
 use CGI    qw( -no_debug );
 
-$OpenPlugin::Param::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Param::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -79,7 +79,7 @@ OpenPlugin, OpenPlugin::Param, CGI
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

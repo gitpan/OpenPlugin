@@ -1,6 +1,6 @@
 package OpenPlugin::Authenticate::DBI;
 
-# $Id: DBI.pm,v 1.10 2002/10/05 19:58:03 andreychek Exp $
+# $Id: DBI.pm,v 1.11 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use OpenPlugin::Authenticate();
@@ -9,7 +9,7 @@ use base          qw( OpenPlugin::Authenticate );
 #use OpenPlugin::Authenticate();
 #$OpenPlugin::Authenticate::DBI::ISA = qw( OpenPlugin::Authenticate );
 
-$OpenPlugin::Authenticate::DBI::VERSION = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Authenticate::DBI::VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
 
 sub authenticate {
     my ($self, $args) = @_;
@@ -93,7 +93,7 @@ None known.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

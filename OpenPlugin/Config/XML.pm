@@ -1,13 +1,13 @@
 package OpenPlugin::Config::XML;
 
-# $Id: XML.pm,v 1.16 2002/09/30 03:23:17 andreychek Exp $
+# $Id: XML.pm,v 1.17 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use base            qw( OpenPlugin::Config );
 use Log::Log4perl   qw( get_logger );
 use OpenThought::XML2Hash();
 
-$OpenPlugin::Config::XML::VERSION = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Config::XML::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
 
 my $logger = get_logger();
 
@@ -103,7 +103,7 @@ L<XML::Parser|XML::Parser>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,12 +1,12 @@
-package OpenPlugin::HttpHeader::Apache;
+package OpenPlugin::HttpHeader::Apache2;
 
-# $Id: Apache.pm,v 1.33 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use OpenPlugin::HttpHeader();
 use base          qw( OpenPlugin::HttpHeader );
 
-$OpenPlugin::HttpHeader::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.33 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::HttpHeader::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 # This driver will only work if used under mod_perl
 
@@ -19,9 +19,9 @@ sub init {
     return $self unless ( $self->OP->request->object );
 
     # Tell OpenPlugin about each header we were sent
-    foreach my $header ($self->OP->request->object->headers_in()){
+    foreach my $header (keys %{ $self->OP->request->object->headers_in() }) {
         $self->set_incoming( $header,
-                $self->OP->request->object->header_in( $header ));
+                $self->OP->request->object->headers_in->{ $header });
     }
 
     return $self;
@@ -35,8 +35,8 @@ sub send_outgoing {
     $type ||= "text/html";
 
     foreach my $name ( $self->get_outgoing ) {
-        $self->OP->request->object->header_out( $name,
-                                                $self->get_outgoing( $name ));
+        $self->OP->request->object->headers_out->{ $name } =
+                                                $self->get_outgoing( $name );
     }
 
     # If the cookie plugin is loaded, check to see if we need to send any

@@ -1,14 +1,12 @@
-package OpenPlugin::Request::Apache;
+package OpenPlugin::Request::Apache2;
 
-# $Id: Apache.pm,v 1.5 2003/04/03 01:51:25 andreychek Exp $
+# $Id: Apache2.pm,v 1.2 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use OpenPlugin::Param();
 use base   qw( OpenPlugin::Param );
-use Apache::Request();
 
-
-$OpenPlugin::Request::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.5 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Request::Apache2::VERSION = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -16,34 +14,34 @@ sub init {
     # This is here for now because when compiling this module at Apache startup
     # time, we don't have an Apache::Request object yet.  We should find a
     # better way to do this though.
-    return $self unless ( $args->{'apache'} );
+    return $self unless ( $args->{'apache2'} );
 
     # Make sure we have an Apache::Request object
-    unless ( $self->state->{'apache'} ) {
+    unless ( $self->state->{'apache2'} ) {
 
         # If passed in an Apache::Request object, use it
-        if( ref $args->{'apache'} eq "Apache::Request" ) {
-            $self->state->{'apache'} = $args->{'apache'};
+        if( ref $args->{'apache2'} eq 'Apache::RequestRec' ) {
+            $self->state->{'apache2'} = $args->{'apache2'};
         }
         # If passed in an Apache object, we can work with that too
-        elsif( ref $args->{'apache'} eq "Apache" ) {
-            $self->state->{'apache'} =
-                Apache::Request->new( $args->{'apache'} );
-        }
+#        if( ref $args->{'apache2'} eq "Apache" ) {
+#            $self->state->{'apache2'} =
+#                Apache::Request->new( $args->{'apache2'} );
+#       }
         else {
-            $self->OP->exception->throw("When using the Apache driver, you ",
-                    "must pass in an Apache or Apache::Request object!");
+            $self->OP->exception->throw("When using the Apache2 driver, you ",
+                    "must pass in an Apache2 object!");
         }
     }
 
     # Set the uri
-    $self->state->{'uri'} = $self->state->{'apache'}->uri;
+    $self->state->{'uri'} = $self->state->{'apache2'}->uri;
 
     return $self;
 }
 
-sub object { my $self = shift; return $self->state->{apache}; }
-sub uri    { my $self = shift; return $self->state->{uri};    }
+sub object { my $self = shift; return $self->state->{'apache2'}; }
+sub uri    { my $self = shift; return $self->state->{'uri'};     }
 
 1;
 

@@ -1,14 +1,13 @@
 package OpenPlugin::Log::Log4perl;
 
-# $Id: Log4perl.pm,v 1.11 2002/10/08 03:25:41 andreychek Exp $
+# $Id: Log4perl.pm,v 1.15 2003/04/12 03:17:42 andreychek Exp $
 
 use strict;
 use OpenPlugin::Log();
 use base          qw( OpenPlugin::Log );
 use Log::Log4perl 0.25 qw( get_logger );
 
-$OpenPlugin::Log::Log4perl::VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
-
+$OpenPlugin::Log::Log4perl::VERSION = sprintf("%d.%02d", q$Revision: 1.15 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -37,26 +36,27 @@ sub init {
 
 #################
 # Logging Methods
-sub debug { shift; get_logger->debug( @_ ); }
-sub info  { shift; get_logger->info( @_ );  }
-sub warn  { shift; get_logger->warn( @_ );  }
-sub error { shift; get_logger->error( @_ ); }
-sub fatal { shift; get_logger->fatal( @_ ); }
+sub debug { shift; get_logger((caller(0))[0])->debug( @_ ); }
+sub info  { shift; get_logger((caller(0))[0])->info( @_ );  }
+sub warn  { shift; get_logger((caller(0))[0])->warn( @_ );  }
+sub error { shift; get_logger((caller(0))[0])->error( @_ ); }
+sub fatal { shift; get_logger((caller(0))[0])->fatal( @_ ); }
 
 #############################
 # Debug level testing methods
-sub is_debug { return get_logger->is_debug }
-sub is_info  { return get_logger->is_info  }
-sub is_warn  { return get_logger->is_warn  }
-sub is_error { return get_logger->is_error }
-sub is_fatal { return get_logger->is_fatal }
+sub is_debug { return get_logger((caller(0))[0])->is_debug }
+sub is_info  { return get_logger((caller(0))[0])->is_info  }
+sub is_warn  { return get_logger((caller(0))[0])->is_warn  }
+sub is_error { return get_logger((caller(0))[0])->is_error }
+sub is_fatal { return get_logger((caller(0))[0])->is_fatal }
 
 #############################
 # Alter logging levels
-sub more_logging { shift; return get_logger->more_logging( @_ ) }
-sub less_logging { shift; return get_logger->less_logging( @_ ) }
-sub inc_level    { shift; return get_logger->inc_level( @_ ) }
-sub dec_level    { shift; return get_logger->dec_level( @_ ) }
+sub more_logging { shift; return get_logger((caller(0))[0])->more_logging( @_ ) }
+sub less_logging { shift; return get_logger((caller(0))[0])->less_logging( @_ ) }
+sub inc_level    { shift; return get_logger((caller(0))[0])->inc_level( @_ ) }
+sub dec_level    { shift; return get_logger((caller(0))[0])->dec_level( @_ ) }
+
 
 1;
 
@@ -122,7 +122,7 @@ L<Log::Log4perl>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

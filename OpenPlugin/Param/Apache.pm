@@ -1,14 +1,13 @@
 package OpenPlugin::Param::Apache;
 
-# $Id: Apache.pm,v 1.14 2002/10/08 20:11:43 andreychek Exp $
+# $Id: Apache.pm,v 1.16 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use OpenPlugin::Param();
 use base   qw( OpenPlugin::Param );
-use Apache::Request();
 
 
-$OpenPlugin::Param::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Param::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -81,7 +80,7 @@ L<Apache::Request|Apache::Request>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

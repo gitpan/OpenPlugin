@@ -1,6 +1,6 @@
 package OpenPlugin::Cookie::Apache;
 
-# $Id: Apache.pm,v 1.25 2002/10/10 15:16:01 andreychek Exp $
+# $Id: Apache.pm,v 1.26 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use OpenPlugin::Cookie();
@@ -8,7 +8,7 @@ use base                    qw( OpenPlugin::Cookie );
 use Apache::Cookie();
 use Data::Dumper            qw( Dumper );
 
-$OpenPlugin::Cookie::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.25 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Cookie::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.26 $ =~ /(\d+)\.(\d+)/);
 
 
 sub init {
@@ -112,7 +112,7 @@ L<OpenPlugin::Cookie|OpenPlugin::Cookie>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,12 +1,12 @@
 package OpenPlugin::Upload::Apache;
 
-# $Id: Apache.pm,v 1.13 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Apache.pm,v 1.14 2003/04/03 01:51:26 andreychek Exp $
 
 use strict;
 use OpenPlugin::Upload();
 use base   qw( OpenPlugin::Upload );
 
-$OpenPlugin::Upload::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Upload::Apache::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -76,7 +76,7 @@ L<OpenPlugin::Upload|OpenPlugin::Upload>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

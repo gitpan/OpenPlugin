@@ -1,12 +1,12 @@
 package OpenPlugin::Upload;
 
-# $Id: Upload.pm,v 1.12 2002/10/23 15:07:29 andreychek Exp $
+# $Id: Upload.pm,v 1.13 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use base                    qw( OpenPlugin::Plugin );
 use Data::Dumper            qw( Dumper );
 
-$OpenPlugin::Upload::VERSION = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Upload::VERSION = sprintf("%d.%02d", q$Revision: 1.13 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'upload' }
@@ -109,7 +109,7 @@ that driver.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

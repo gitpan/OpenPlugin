@@ -1,12 +1,12 @@
 package OpenPlugin::Datasource;
 
-# $Id: Datasource.pm,v 1.17 2002/10/09 02:59:30 andreychek Exp $
+# $Id: Datasource.pm,v 1.20 2003/04/28 17:43:48 andreychek Exp $
 
 use strict;
 use base                  qw( OpenPlugin::Plugin );
 use Data::Dumper          qw( Dumper );
 
-$OpenPlugin::Datasource::VERSION = sprintf("%d.%02d", q$Revision: 1.17 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Datasource::VERSION = sprintf("%d.%02d", q$Revision: 1.20 $ =~ /(\d+)\.(\d+)/);
 
 my %DS     = ();  # Holds a copy of all our datasource information/handles
 my %LOADED = ();  # Holds a copy of all loaded datasource drivers
@@ -120,7 +120,7 @@ __END__
 
 =head1 NAME
 
-OpenPlugin::Datasource - plugin for datasource connection managers
+OpenPlugin::Datasource - Datasource connection manager plugin
 
 =head1 SYNOPSIS
 
@@ -133,17 +133,17 @@ OpenPlugin::Datasource - plugin for datasource connection managers
 
 =head1 DESCRIPTION
 
-This plugin provides a wrapper around connection methods for DBI, LDAP
-or any other type of connections needed. It caches the connections for
-reuse throughout the lifetime of the application, although it contains
-no behavior (yet) for keeping the connections alive.
+This plugin provides a simple means of connecting to datasources such as DBI,
+LDAP or any other type of connections needed. It caches the connections for
+reuse throughout the lifetime of the application, although it contains no
+behavior (yet) for keeping the connections alive.
 
 =head1 METHODS
 
-B<connect( $datasource_name, \%datasource_info )>
+B<connect( $datasource_name, [ \%datasource_info ] )>
 
-Returns datasource mapping to C<$datasource_name>, as defined in the config
-file.
+Returns a datasource mapping to C<$datasource_name>.  Datasources are defined
+in the config file.
 
 B<disconnect( $datasource_name )>
 
@@ -165,11 +165,11 @@ Nothing known.
 
 See the individual datasource drivers for details on configuration and usage.
 
-L<OpenPlugin::Datasource::DBI>, L<OpenPlugin::Datasource::LDAP>
+L<OpenPlugin>, L<OpenPlugin::Datasource::DBI>, L<OpenPlugin::Datasource::LDAP>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

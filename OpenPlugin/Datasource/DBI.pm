@@ -1,13 +1,13 @@
 package OpenPlugin::Datasource::DBI;
 
-# $Id: DBI.pm,v 1.16 2002/10/03 21:00:50 andreychek Exp $
+# $Id: DBI.pm,v 1.18 2003/04/03 02:47:31 andreychek Exp $
 
 use strict;
 use Data::Dumper  qw( Dumper );
 use DBI           qw();
 
 @OpenPlugin::Datasource::DBI::ISA      = qw();
-$OpenPlugin::Datasource::DBI::VERSION  = sprintf("%d.%02d", q$Revision: 1.16 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Datasource::DBI::VERSION  = sprintf("%d.%02d", q$Revision: 1.18 $ =~ /(\d+)\.(\d+)/);
 
 use constant DEFAULT_READ_LEN => 32768;
 use constant DEFAULT_TRUNC_OK => 0;
@@ -34,17 +34,17 @@ sub connect {
     # it happens
 
     my $dsn      = "DBI:$ds_info->{driver}:$ds_info->{dsn}";
-    my $username = $ds_info->{username};
-    my $password = $ds_info->{password};
+    my $username = $ds_info->{'username'};
+    my $password = $ds_info->{'password'};
 
     if( $OP->log->is_info ) {
         $OP->log->info( "Trying to connect to DBI with information:\n",
                                Dumper( $dsn ) );
     }
 
-    my $db = eval { DBI->connect( $dsn, $username, $password ); };
+    my $dbh = eval { DBI->connect( $dsn, $username, $password ); };
 
-    if(( $@ ) || ( !$db )) {
+    if( $@ or not $dbh ) {
         $OP->exception->throw( "Database connect error: $DBI::errstr" );
     }
 
@@ -53,16 +53,16 @@ sub connect {
     # We don't set this until here so we can control the format of the
     # error...
 
-    $db->{RaiseError}  = 1;
-    $db->{PrintError}  = 0;
-    $db->{ChopBlanks}  = 1;
-    $db->{AutoCommit}  = 1;
-    $db->{LongReadLen} = $ds_info->{long_read_len} || DEFAULT_READ_LEN;
-    $db->{LongTruncOk} = $ds_info->{long_trunc_ok} || DEFAULT_TRUNC_OK;
+    $dbh->{'RaiseError'}  = 1;
+    $dbh->{'PrintError'}  = 0;
+    $dbh->{'ChopBlanks'}  = 1;
+    $dbh->{'AutoCommit'}  = 1;
+    $dbh->{'LongReadLen'} = $ds_info->{'long_read_len'} || DEFAULT_READ_LEN;
+    $dbh->{'LongTruncOk'} = $ds_info->{'long_trunc_ok'} || DEFAULT_TRUNC_OK;
 
-    $db->trace( $ds_info->{trace_level} ) if ( $ds_info->{trace_level} );
+    $dbh->trace( $ds_info->{'trace_level'} ) if ( $ds_info->{'trace_level'} );
 
-    return $db;
+    return $dbh;
 }
 
 
@@ -255,7 +255,7 @@ PerlEx - http://www.activestate.com/Products/PerlEx/
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

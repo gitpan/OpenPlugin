@@ -27,17 +27,17 @@ Config      Read/Write config files         conf(ro), ini, perl, XML(ro)
 Cookie      Generate Cookies                Apache, CGI
 Datasource  Manage datasource connections   DBI, LDAP
 Exception   Exception Handling              N/A
-HttpHeader  Manipulate HTTP Headers         Apache, CGI
+HttpHeader  Manipulate HTTP Headers         Apache, Apache2, CGI
 Log         Logs messages                   Any offered by Log::Log4perl
-Param       Retrieve GET & POST params      Apache, CGI
-Request     View request related data       Apache, CGI
+Param       Retrieve GET & POST params      Apache, Apache2, CGI
+Request     View request related data       Apache, Apache2, CGI
 Session     Manage sessions                 Any offered by Apache::Session
 Upload      Handle file uploads             Apache, CGI
 
 
 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek.  All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek.  All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

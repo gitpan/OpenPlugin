@@ -1,13 +1,13 @@
 package OpenPlugin::Config::Conf;
 
-# $Id: Conf.pm,v 1.8 2002/09/30 03:23:17 andreychek Exp $
+# $Id: Conf.pm,v 1.9 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use base            qw( OpenPlugin::Config );
 use Log::Log4perl   qw( get_logger );
 use Config::General();
 
-$OpenPlugin::Config::Conf::VERSION = sprintf("%d.%02d", q$Revision: 1.8 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Config::Conf::VERSION = sprintf("%d.%02d", q$Revision: 1.9 $ =~ /(\d+)\.(\d+)/);
 
 my $logger = get_logger();
 
@@ -113,7 +113,7 @@ L<Config::General|Config::General>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

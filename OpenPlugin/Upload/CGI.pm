@@ -1,13 +1,13 @@
 package OpenPlugin::Upload::CGI;
 
-# $Id: CGI.pm,v 1.10 2002/10/23 01:50:24 andreychek Exp $
+# $Id: CGI.pm,v 1.11 2003/04/03 01:51:26 andreychek Exp $
 
 use strict;
 use OpenPlugin::Upload();
 use base   qw( OpenPlugin::Upload );
 use CGI    qw( -no_debug );
 
-$OpenPlugin::Upload::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.10 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Upload::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -101,7 +101,7 @@ L<CGI|CGI>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

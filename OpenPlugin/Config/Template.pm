@@ -1,6 +1,6 @@
 package OpenPlugin::Config::Template;
 
-# $Id: Template.pm,v 1.11 2002/09/30 03:23:17 andreychek Exp $
+# $Id: Template.pm,v 1.12 2003/04/03 01:51:24 andreychek Exp $
 
 # This is a template for a config file driver.  You can use this as a base for
 # creating new drivers that read in configuration information.  The only two
@@ -12,7 +12,7 @@ use strict;
 use base          qw( OpenPlugin::Config );
 use Data::Dumper  qw( Dumper );
 
-$OpenPlugin::Config::Template::VERSION = sprintf("%d.%02d", q$Revision: 1.11 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Config::Template::VERSION = sprintf("%d.%02d", q$Revision: 1.12 $ =~ /(\d+)\.(\d+)/);
 
 # This sub is called when OpenPlugin is ready to read in the configuration.
 # Once this is called, it's your responsibility to open the configuration data,
@@ -102,7 +102,7 @@ None known.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

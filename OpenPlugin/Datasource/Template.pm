@@ -1,13 +1,13 @@
 package OpenPlugin::Datasource::DBI;
 
-# $Id: Template.pm,v 1.2 2002/09/26 17:49:34 andreychek Exp $
+# $Id: Template.pm,v 1.3 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use Data::Dumper  qw( Dumper );
 use DBI           qw();
 
 @OpenPlugin::Datasource::DBI::ISA      = qw();
-$OpenPlugin::Datasource::DBI::VERSION  = sprintf("%d.%02d", q$Revision: 1.2 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Datasource::DBI::VERSION  = sprintf("%d.%02d", q$Revision: 1.3 $ =~ /(\d+)\.(\d+)/);
 
 # This function will be called when a program wishes to connect to your
 # datasource
@@ -217,7 +217,7 @@ PerlEx - http://www.activestate.com/Products/PerlEx/
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

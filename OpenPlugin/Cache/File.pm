@@ -1,13 +1,13 @@
 package OpenPlugin::Cache::File;
 
-# $Id: File.pm,v 1.14 2002/10/01 12:57:39 andreychek Exp $
+# $Id: File.pm,v 1.15 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 use OpenPlugin::Cache();
 use base           qw( OpenPlugin::Cache );
 use Cache::FileCache();
 
-$OpenPlugin::Cache::File::VERSION = sprintf("%d.%02d", q$Revision: 1.14 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Cache::File::VERSION = sprintf("%d.%02d", q$Revision: 1.15 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -98,7 +98,7 @@ None known.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -12,7 +12,7 @@ use constant PLUGIN     => '_plugin';
 use constant PLUGINCONF => '_pluginconf';
 use constant INSTANCE   => '_instance';
 
-$OpenPlugin::VERSION = '0.09';
+$OpenPlugin::VERSION = '0.10';
 
 # We'll need the logger var throughout this entire file
 my $logger;
@@ -64,7 +64,7 @@ sub init {
     );
 
     Log::Log4perl::init( \$log_conf );
-    $logger = get_logger();
+    $logger = get_logger("OpenPlugin");
 
 }
 
@@ -164,15 +164,15 @@ sub get_drivers {
 
 # Save any info that we have relating the a plugins configuration
 sub set_plugin_info {
-    my ( $self, $plugin, $sub_plugin ) = @_;
+    my ( $self, $plugin, $nested_plugin ) = @_;
 
     # $plugin_info contains all the information about a given plugin that was
     # found in the configuration file
     my $plugin_info;
-    if( $sub_plugin ) {
+    if( $nested_plugin ) {
         $plugin_info =
-            $self->config->{'plugin'}{ $plugin }{'plugin'}{ $sub_plugin };
-        $plugin = $sub_plugin;
+            $self->config->{'plugin'}{ $plugin }{'plugin'}{ $nested_plugin };
+        $plugin = $nested_plugin;
     }
     else {
         $plugin_info = $self->config->{'plugin'}{ $plugin };
@@ -334,10 +334,10 @@ sub register_plugin {
     }
 
     # Handle plugins defined within other plugins
-    foreach my $sub_plugin ( $self->get_plugins( $plugin )) {
-        $self->set_plugin_info( $plugin, $sub_plugin );
+    foreach my $nested_plugin ( $self->get_plugins( $plugin )) {
+        $self->set_plugin_info( $plugin, $nested_plugin );
 
-        $self->register_plugin( $sub_plugin );
+        $self->register_plugin( $nested_plugin );
     }
 
 }
@@ -349,6 +349,11 @@ sub init_plugin {
     unless( $plugin ) {
         $self->exception->throw( "You must call init_plugin() with a ",
                                  "plugin name!" );
+    }
+
+    unless( $self->get_plugin_info( $plugin )) {
+        $self->exception->throw( "You attemped to call [$plugin], which is ",
+                                 "not a valid plugin!" );
     }
 
     # No driver name is okay, we'll just use the default
@@ -367,7 +372,7 @@ sub init_plugin {
 sub create_plugin_instance {
     my ( $self, $plugin, $driver ) = @_;
 
-    my $class_identifier = $plugin. "-" . $driver;
+    my $class_identifier = $plugin . "-" . $driver;
 
     return OpenPlugin::Plugin->new( $class_identifier, $self,
                                     $self->state->{'command_line'}{ $plugin });
@@ -405,7 +410,8 @@ sub generate_plugin_method_call {
                     return $self->{ INSTANCE() }{ $plugin }{ $driver };
                 }
 
-                # If there isn't yet an instance, create one and return it
+                # If there isn't yet an instance (typical when the plugin isn't
+                # loaded at startup), create one and return it
                 else {
                     my $instance = $self->create_plugin_instance( $plugin,
                                                                   $driver );
@@ -609,10 +615,11 @@ example of how the configuration for the Session plugin might look:
 
 This example defines several things for our Session plugin.
 
-First, it tells the plugin to load at the same time OpenPlugin does.  This is
-particularly useful when running under mod_perl, where you can have OpenPlugin,
-along with any number of plugins, load at the same time Apache does.  You'll
-find this to be a significant speed increase.
+First, it tells the plugin to load at the same time OpenPlugin does (startup
+time).  This is particularly useful when running under mod_perl, where you can
+have OpenPlugin, along with any number of plugins, load at the same time Apache
+does.  You'll find this to be a significant speed increase since Apache is
+happy to keep these modules compiled and cached within it's memory.
 
 Secondly, we tell Session that it should expire sessions that have been
 innactive for 3 hours.
@@ -657,7 +664,7 @@ whenever OpenPlugin does.
 We define two drivers this time, Passwd and SMB (SMB is the protocol Windows NT
 uses).  When using more than one driver, you should tell OpenPlugin which one
 is your default driver.  As you can see above, this example sets Passwd as the
-default.
+default with the statement C<default = Password>.
 
 Having a default driver means that when we say:
 
@@ -712,7 +719,7 @@ plugins.
 
 =over 4
 
-=item B<$OP = OpenPlugin->new( %params )>
+=item B<new( %params )>
 
 You can pass a number of parameters into the B<new()> method.  Each of those
 parameters can effect how a given plugin, or OpenPlugin as a whole, functions.
@@ -747,7 +754,7 @@ the default setup for logging:
         log4perl.appender.stderr.layout  = org.apache.log4j.PatternLayout
         log4perl.appender.stderr.layout.ConversionPattern  = %C (%L) %m%n
 
-You can learn what that all means by reading the C<Log::Log4perl>
+You can learn what that all means by reading the L<Log::Log4perl|Log::Log4perl>
 documentation.  But if there's something in that default that you don't like,
 you may pass in values to override it.  Lets say that the default logging level
 of C<WARN> that it establishes doesn't provide enough information during your
@@ -758,7 +765,7 @@ debugging session.  You can override it like so:
         log4perl.appender.stderr         = Log::Dispatch::Screen
         log4perl.appender.stderr.layout  = org.apache.log4j.PatternLayout
         log4perl.appender.stderr.layout.ConversionPattern  = %C (%L) %m%n
-    );
+ );
 
  my $OP = OpenPlugin->new( init   => { log => $log_info },
                            config => { src => "/path/to/config" },
@@ -881,7 +888,7 @@ OpenThought Application Environment also makes use of it quite successfully.
 That being said, OpenPlugin is still under heavy development.  There are a lot
 of things to do.
 
-I consider this alpha software.  It by all means has bugs.  Part's of the API
+I consider this alpha software.  It by all means has bugs.  Parts of the API
 may change.  It's also been known to cause your significant other to think you
 spend too much time on the computer.  Your milage may vary.
 
@@ -899,7 +906,7 @@ you have any patches, I like those too :-)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
@@ -911,8 +918,8 @@ Eric Andreychek <eric@openthought.net>
 =head1 CONTRIBUTORS
 
 Chris Winters initially helped get things rolling.  OpenPlugin also makes use
-of his Class::Factory module, and I occasionally borrow code and ideas from
-OpenInteract/SPOPS.  Thanks Chris!
+of his L<Class::Factory> module, and I occasionally borrow code and ideas from
+L<OpenInteract> and L<SPOPS>.  Thanks Chris!
 
 =head1 SEE ALSO
 

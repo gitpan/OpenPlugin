@@ -53,6 +53,41 @@ my $CONFIG_DATA = {
             },
         },
     },
+    request_apache2 => {
+        request => {
+            load   => "Startup",
+            driver => {
+                Apache2 => {},
+            },
+
+            plugin => {
+                param => {
+                    load => "Startup",
+                    driver => {
+                        Apache2 => {},
+                    }
+                },
+                httpheader => {
+                    load => "Startup",
+                    driver => {
+                        Apache2 => {},
+                    }
+                },
+                cookie => {
+                    load => "Auto",
+                    driver => {
+                        Apache2 => {},
+                    }
+                },
+                upload => {
+                    load => "Startup",
+                    driver => {
+                        Apache2 => {},
+                    }
+                },
+            },
+        },
+    },
     request_apache => {
         request => {
             load   => "Startup",

@@ -1,11 +1,11 @@
 package OpenPlugin::HttpHeader;
 
-# $Id: HttpHeader.pm,v 1.20 2002/10/23 15:07:29 andreychek Exp $
+# $Id: HttpHeader.pm,v 1.21 2003/04/03 01:51:24 andreychek Exp $
 
 use strict;
 
 @OpenPlugin::HttpHeader::ISA     = qw( OpenPlugin::Plugin );
-$OpenPlugin::HttpHeader::VERSION = sprintf("%d.%02d", q$Revision: 1.20 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::HttpHeader::VERSION = sprintf("%d.%02d", q$Revision: 1.21 $ =~ /(\d+)\.(\d+)/);
 
 sub OP   { return $_[0]->{_m}{OP} }
 sub type { return 'httpheader' }
@@ -157,7 +157,7 @@ that driver.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

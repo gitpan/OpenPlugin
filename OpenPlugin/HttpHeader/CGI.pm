@@ -1,13 +1,13 @@
 package OpenPlugin::HttpHeader::CGI;
 
-# $Id: CGI.pm,v 1.23 2002/10/23 15:07:30 andreychek Exp $
+# $Id: CGI.pm,v 1.24 2003/04/03 01:51:25 andreychek Exp $
 
 use strict;
 use OpenPlugin::HttpHeader();
 use base   qw( OpenPlugin::HttpHeader );
 use CGI( -no_debug );
 
-$OpenPlugin::Params::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.23 $ =~ /(\d+)\.(\d+)/);
+$OpenPlugin::Params::CGI::VERSION = sprintf("%d.%02d", q$Revision: 1.24 $ =~ /(\d+)\.(\d+)/);
 
 sub init {
     my ( $self, $args ) = @_;
@@ -94,7 +94,7 @@ Nothing known.
 
 =head1 COPYRIGHT
 
-Copyright (c) 2001-2002 Eric Andreychek. All rights reserved.
+Copyright (c) 2001-2003 Eric Andreychek. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
